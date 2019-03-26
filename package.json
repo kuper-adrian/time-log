@@ -8,5 +8,8 @@
     "start": "node ./index.js"
   },
   "author": "Adrian Kuper",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "commander": "2.19.0"
+  }
 }
