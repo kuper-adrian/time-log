@@ -9,53 +9,15 @@ const path = require('path');
 const version = require('./package.json').version;
 const config = require('./time-log.config.json');
 
+const beginCommand = require('./commands/begin-command');
+
 let currentDataFilePath;
 
 program.version(version);
 
 init();
 
-program
-  .command('begin [time]')
-  .description('test')
-  .action(function (time, cmd) {
-    const fileData = fs.readFileSync(currentDataFilePath);
-    const data = JSON.parse(fileData);
-    const currentDay = dayjs().date();
-    let entry = null;
-    let entryIndex = -1;
-
-    data.forEach((e, index) => {
-      if (e.day === currentDay) {
-        entry = e;
-        entryIndex = index;
-      } 
-    });
-
-    let begin = null;
-
-    if (time) {
-      const hour = parseInt(time.substring(0, 2));
-      const minute = parseInt(time.substring(3, 5));
-      begin = dayjs();
-      begin = begin.set('hour', hour);
-      begin = begin.set('minute', minute);
-    } else {
-      begin = dayjs();
-    }
-
-    if (entry) {
-      entry.begin = begin.format();
-      data[entryIndex] = entry;
-    } else {
-      data.push({
-        day: currentDay,
-        begin: begin.format(),
-      });
-    }
-
-    fs.writeFileSync(currentDataFilePath, JSON.stringify(data));
-  });
+beginCommand.attach(program, currentDataFilePath);
 
 program
   .command('end [time]')
