@@ -1,5 +1,6 @@
 {
   "data": "./data",
   "id": "",
-  "name": ""
+  "name": "",
+  "timeFormat": "HH:mm"
 }
