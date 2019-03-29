@@ -7,16 +7,11 @@ const fs = require('fs');
 const path = require('path');
 
 const version = require('./package.json').version;
-const config = require('./time-log.config.json');
 
 const beginCommand = require('./commands/begin-command');
 const endCommand = require('./commands/end-command');
 
-let currentDataFilePath;
-
 program.version(version);
-
-init();
 
 beginCommand.attach(program);
 endCommand.attach(program);
@@ -51,22 +46,3 @@ program
   });
 
 program.parse(process.argv);
-
-function init() {
-  if (!fs.existsSync(config.data)) {
-    fs.mkdirSync(config.data);
-  }
-
-  const currentMonth = dayjs().format('MM');
-  const currentYear = dayjs().year().toString();
-  
-  const currentYearFolderPath = path.join(config.data, currentYear);
-  if (!fs.existsSync(currentYearFolderPath)) {
-    fs.mkdirSync(currentYearFolderPath)
-  }
-
-  currentDataFilePath = path.join(currentYearFolderPath, `${currentMonth}-${currentYear}.json`);
-  if (!fs.existsSync(currentDataFilePath)) {
-    fs.writeFileSync(currentDataFilePath, '[]');
-  }
-}
