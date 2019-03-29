@@ -10,17 +10,13 @@ const version = require('./package.json').version;
 
 const beginCommand = require('./commands/begin-command');
 const endCommand = require('./commands/end-command');
+const configCommand = require('./commands/config-command');
 
 program.version(version);
 
 beginCommand.attach(program);
 endCommand.attach(program);
-
-program
-  .command('config <name> <value>')
-  .action(function (name, value, cmd) {
-    console.log(`TODO: setting ${name} to ${value}`);
-  });
+configCommand.attach(program);
 
 program
   .command('export <p>')
