@@ -27,7 +27,7 @@ function ensureDataFile(month, year) {
   const yearFolderPath = ensureYearFolder(year);
 
   if (!month) {
-    month = dayjs().month();
+    month = dayjs().month() + 1;
   }
   if (!year) {
     year = dayjs().year();
@@ -54,4 +54,22 @@ exports.read = function(month, year) {
 exports.write = function(content, month, year) {
   const dataFilePath = ensureDataFile(month, year);
   fs.writeFileSync(dataFilePath, content);
+}
+
+exports.getYearFolderContents = function(year) {
+  const yearFolderPath = path.join(config.data, year.toString());
+
+  if (!fs.existsSync(yearFolderPath)) {
+    return [];
+  }
+
+  return fs.readdirSync(yearFolderPath);
+}
+
+exports.getDataFolderContents = function() {
+  if (!fs.existsSync(config.data)) {
+    return [];
+  }
+
+  return fs.readdirSync(config.data);
 }
