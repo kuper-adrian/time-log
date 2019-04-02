@@ -4,43 +4,69 @@ const dataFile = require('../util/data-file');
 exports.attach = function(program) {
   program
     .command('begin [time]')
+    .option('-d, --day <d>', 'Day of month. Defaults to current day')
+    .option('-m, --month <m>', 'Month. Defaults to current month')
+    .option('-y, --year <y>', 'Year. Defaults to current year')
     .description('todo')
     .action(function (time, cmd) {
-      const fileData = dataFile.read();
+      const currentDayJs = dayjs();
+      let year = currentDayJs.year();
+      let month = currentDayJs.month() + 1;
+      let day = currentDayJs.date();
+
+      if (cmd.day) {
+        day = parseInt(cmd.day);
+      }
+      if (cmd.month) {
+        month = parseInt(cmd.month);
+      }
+      if (cmd.year) {
+        year = parseInt(cmd.year);
+      }
+
+      const fileData = dataFile.read(month, year);
       const data = JSON.parse(fileData);
-      const currentDay = dayjs().date();
       let entry = null;
       let entryIndex = -1;
 
       data.forEach((e, index) => {
-        if (e.day === currentDay) {
+        if (e.day === day) {
           entry = e;
           entryIndex = index;
         } 
       });
 
-      let begin = null;
+      let begin = currentDayJs;
 
       if (time) {
-        const hour = parseInt(time.substring(0, 2));
-        const minute = parseInt(time.substring(3, 5));
-        begin = dayjs();
-        begin = begin.set('hour', hour);
-        begin = begin.set('minute', minute);
-      } else {
-        begin = dayjs();
+        const timeRegex = /(\d{2}):(\d{2})/;
+        const match = time.match(timeRegex);
+
+        if (!match) {
+          throw new Error('Invalid time. Please use format "HH:mm".');
+        }
+        
+        begin = begin.set('hour', match[1]);
+        begin = begin.set('minute', match[2]);
       }
+
+      begin = begin.set('day', day);
+      begin = begin.set('month', month - 1);
+      begin = begin.set('year', year);
+      begin = begin.set('second', 0);
+      begin = begin.set('millisecond', 0);
 
       if (entry) {
         entry.begin = begin.format();
         data[entryIndex] = entry;
       } else {
         data.push({
-          day: currentDay,
+          day: day,
           begin: begin.format(),
         });
       }
 
-      dataFile.write(JSON.stringify(data));
+      data.sort((a, b) => a.day - b.day);
+      dataFile.write(JSON.stringify(data), month, year);
     });
 }

@@ -4,16 +4,34 @@ const dataFile = require('../util/data-file');
 exports.attach = function(program) {
   program
     .command('end [time]')
+    .option('-d, --day <d>', 'Day of month. Defaults to current day')
+    .option('-m, --month <m>', 'Month. Defaults to current month')
+    .option('-y, --year <y>', 'Year. Defaults to current year')
     .description('todo')
     .action(function(time, cmd) {
-      const fileData = dataFile.read();
+      const currentDayJs = dayjs();
+      let year = currentDayJs.year();
+      let month = currentDayJs.month() + 1;
+      let day = currentDayJs.date();
+
+      if (cmd.day) {
+        day = parseInt(cmd.day);
+      }
+      if (cmd.month) {
+        month = parseInt(cmd.month);
+      }
+      if (cmd.year) {
+        year = parseInt(cmd.year);
+      }
+
+
+      const fileData = dataFile.read(month, year);
       const data = JSON.parse(fileData);
-      const currentDay = dayjs().date();
       let entry = null;
       let entryIndex = -1;
 
       data.forEach((e, index) => {
-        if (e.day === currentDay) {
+        if (e.day === day) {
           entry = e;
           entryIndex = index;
         } 
@@ -23,20 +41,30 @@ exports.attach = function(program) {
         throw new Error('No begin date');
       }
 
+      let end = dayjs();
       if (time) {
-        // TODO replace with regex
-        const hour = parseInt(time.substring(0, 2));
-        const minute = parseInt(time.substring(3, 5));
-        let end = dayjs();
-        end = end.set('hour', hour);
-        end = end.set('minute', minute);
-        entry.end = end.format();
-      } else {
-        entry.end = dayjs().format();
+        const timeRegex = /(\d{2}):(\d{2})/;
+        const match = time.match(timeRegex);
+
+        if (!match) {
+          throw new Error('Invalid time. Please use format "HH:mm".');
+        }
+        
+        end = end.set('hour', match[1]);
+        end = end.set('minute', match[2]);
+         
       }
+
+      end = end.set('day', day);
+      end = end.set('month', month - 1);
+      end = end.set('year', year);
+      end = end.set('second', 0);
+      end = end.set('millisecond', 0);
       
+      entry.end = end.format();
       data[entryIndex] = entry;
 
-      dataFile.write(JSON.stringify(data));
+      
+      dataFile.write(JSON.stringify(data), month, year);
     });
 }
