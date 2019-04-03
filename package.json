@@ -1,6 +1,6 @@
 {
   "name": "time-log",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Tool zum Erstellen von Stundenzetteln",
   "main": "time-log.js",
   "scripts": {
@@ -9,6 +9,17 @@
   },
   "author": "Adrian Kuper",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kuper-adrian/time-log.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kuper-adrian/time-log/issues"
+  },
+  "homepage": "https://github.com/kuper-adrian/time-log#readme",
+  "keywords": [
+    "cli-tool"
+  ],
   "dependencies": {
     "commander": "2.19.0",
     "dayjs": "1.8.11"
