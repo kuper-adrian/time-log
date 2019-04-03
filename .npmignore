@@ -1,0 +1,11 @@
+node_modules/
+.vscode/
+export/
+data/
+
+.eslintrc.js
+.gitattributes
+.gitignore
+.npmignore
+
+package-lock.json
