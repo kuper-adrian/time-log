@@ -9,6 +9,9 @@
   },
   "author": "Adrian Kuper",
   "license": "MIT",
+  "bin": {
+    "stuzet": "./time-log.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kuper-adrian/time-log.git"
