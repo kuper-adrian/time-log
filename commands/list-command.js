@@ -52,7 +52,7 @@ exports.attach = function attach(program) {
     .command('list [what]')
     .option('-m, --month <m>', 'Month of data file to be exported. Defaults to current month')
     .option('-y, --year <y>', 'Year of data file to be exported. Defaults to current year')
-    .description('todo')
+    .description('Lists time logs')
     .action((what, cmd) => {
       let year = null;
       let month = null;
