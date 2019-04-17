@@ -7,6 +7,7 @@ exports.attach = function attach(program) {
   program
     .command('config [name] [value]')
     .option('-l, --list', 'List current config')
+    .description('List or set stuzet configuration')
     .action((name, value, cmd) => {
       const configFilePath = path.join(__dirname, CONFIG_FILE_NAME);
       const configData = fs.readFileSync(configFilePath);
