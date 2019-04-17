@@ -2,7 +2,7 @@ const fs = require('fs');
 const dayjs = require('dayjs');
 const path = require('path');
 
-const config = require('../time-log.config.json');
+const config = require('../stuzet.config.json');
 
 function ensureDataFolder() {
   if (!fs.existsSync(config.data)) {

@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const CONFIG_FILE_NAME = '../time-log.config.json';
+const CONFIG_FILE_NAME = '../stuzet.config.json';
 
 exports.attach = function attach(program) {
   program

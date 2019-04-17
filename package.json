@@ -2,17 +2,17 @@
   "name": "stuzet",
   "version": "1.1.0",
   "description": "Tool zum Erstellen von Stundenzetteln",
-  "main": "time-log.js",
+  "main": "stuzet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./time-log.js",
+    "start": "node ./stuzet.js",
     "lint": "./node_modules/.bin/eslint .",
     "prepublishOnly": "npm run lint"
   },
   "author": "Adrian Kuper",
   "license": "MIT",
   "bin": {
-    "stuzet": "./time-log.js"
+    "stuzet": "./stuzet.js"
   },
   "repository": {
     "type": "git",
