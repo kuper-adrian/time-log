@@ -1,5 +1,5 @@
 const dayjs = require('dayjs');
-const path = require('path');
+const pathModule = require('path');
 const fs = require('fs');
 
 const dataFile = require('../util/data-file');
@@ -12,7 +12,6 @@ function getWorkTime(begin, end) {
   if (minutes / 60 > 9) {
     minutes -= 45;
   }
-  console.log(minutes);
   return minutes;
 }
 
@@ -50,11 +49,11 @@ function buildLine(begin, end) {
 
 exports.attach = function attach(program) {
   program
-    .command('export <p>')
+    .command('export <path>')
     .option('-m, --month <m>', 'Month of data file to be exported. Defaults to current month')
     .option('-y, --year <y>', 'Year of data file to be exported. Defaults to current year')
-    .description('todo')
-    .action((p) => {
+    .description('Exports data file to .csv at specified location')
+    .action((path) => {
       const fileData = dataFile.read();
       const data = JSON.parse(fileData);
       let exportFileContents = '';
@@ -73,7 +72,7 @@ exports.attach = function attach(program) {
         }
       }
 
-      const exportFileLocation = path.join(p, `${dayjs().format('MM-YYYY')}.csv`);
+      const exportFileLocation = pathModule.join(path, `${dayjs().format('MM-YYYY')}.csv`);
 
       fs.writeFileSync(exportFileLocation, exportFileContents);
     });
