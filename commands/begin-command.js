@@ -67,6 +67,6 @@ exports.attach = function attach(program) {
       }
 
       data.sort((a, b) => a.day - b.day);
-      dataFile.write(JSON.stringify(data), month, year);
+      dataFile.write(JSON.stringify(data, null, 2), month, year);
     });
 };
