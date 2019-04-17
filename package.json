@@ -5,7 +5,8 @@
   "main": "time-log.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./time-log.js"
+    "start": "node ./time-log.js",
+    "lint": "./node_modules/.bin/eslint ."
   },
   "author": "Adrian Kuper",
   "license": "MIT",
@@ -26,5 +27,10 @@
   "dependencies": {
     "commander": "2.19.0",
     "dayjs": "1.8.11"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2"
   }
 }
