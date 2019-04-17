@@ -9,7 +9,7 @@ npm install -g stuzet
 
 ## Verwendung
 ```
-Usage: time-log [options] [command]
+Usage: stuzet [options] [command]
 
 Options:
   -V, --version                    output the version number
