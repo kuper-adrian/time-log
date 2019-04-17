@@ -3,14 +3,14 @@ const dataFile = require('../util/data-file');
 
 function listYears() {
   const years = dataFile.getDataFolderContents();
-  years.forEach(element => {
+  years.forEach((element) => {
     console.log(element);
   });
 }
 
 function listMonths(year) {
   const months = dataFile.getYearFolderContents(year);
-  months.forEach(element => {
+  months.forEach((element) => {
     console.log(element);
   });
 }
@@ -19,7 +19,7 @@ function listDays(month, year) {
   const file = dataFile.read(month, year);
   const data = JSON.parse(file);
 
-  data.forEach(element => {
+  data.forEach((element) => {
     let begin = null;
     let end = null;
     let hasDuration = false;
@@ -29,7 +29,7 @@ function listDays(month, year) {
     }
 
     if (element.end) {
-      end = end = dayjs(element.end);
+      end = dayjs(element.end);
       hasDuration = true;
     }
     let duration = null;
@@ -47,13 +47,13 @@ function listDays(month, year) {
   });
 }
 
-exports.attach = function(program) {
+exports.attach = function attach(program) {
   program
     .command('list [what]')
     .option('-m, --month <m>', 'Month of data file to be exported. Defaults to current month')
     .option('-y, --year <y>', 'Year of data file to be exported. Defaults to current year')
     .description('todo')
-    .action(function (what, cmd) {
+    .action((what, cmd) => {
       let year = null;
       let month = null;
 
@@ -64,22 +64,22 @@ exports.attach = function(program) {
 
         case 'months':
           if (cmd.year) {
-            year = cmd.year;
+            year = { cmd };
           } else {
             year = dayjs().year();
           }
-          
+
           listMonths(year);
           break;
 
         default:
           if (cmd.year) {
-            year = cmd.year;
+            year = { cmd };
           } else {
             year = dayjs().year();
           }
           if (cmd.month) {
-            month = cmd.month;
+            month = { cmd };
           } else {
             month = dayjs().month() + 1;
           }
@@ -87,4 +87,4 @@ exports.attach = function(program) {
           break;
       }
     });
-}
+};

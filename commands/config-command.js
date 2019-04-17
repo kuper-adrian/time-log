@@ -1,7 +1,7 @@
-exports.attach = function(program) {
+exports.attach = function attach(program) {
   program
     .command('config <name> <value>')
-    .action(function (name, value, cmd) {
+    .action((name, value) => {
       console.log(`TODO: setting ${name} to ${value}`);
     });
-}
+};
