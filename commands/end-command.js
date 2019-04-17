@@ -7,7 +7,7 @@ exports.attach = function attach(program) {
     .option('-d, --day <d>', 'Day of month. Defaults to current day')
     .option('-m, --month <m>', 'Month. Defaults to current month')
     .option('-y, --year <y>', 'Year. Defaults to current year')
-    .description('todo')
+    .description('Sets end time')
     .action((time, cmd) => {
       const currentDayJs = dayjs();
       let year = currentDayJs.year();
