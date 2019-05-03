@@ -50,7 +50,7 @@ exports.attach = function attach(program) {
         begin = begin.set('minute', match[2]);
       }
 
-      begin = begin.set('day', day);
+      begin = begin.set('date', day);
       begin = begin.set('month', month - 1);
       begin = begin.set('year', year);
       begin = begin.set('second', 0);
