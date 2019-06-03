@@ -54,6 +54,7 @@ exports.attach = function attach(program) {
     .option('-y, --year <y>', 'Year of data file to be exported. Defaults to current year')
     .description('Lists time logs')
     .action((what, cmd) => {
+      const currentDayJs = dayjs();
       let year = null;
       let month = null;
 
@@ -63,8 +64,10 @@ exports.attach = function attach(program) {
           break;
 
         case 'months':
+          year = currentDayJs.year();
+
           if (cmd.year) {
-            year = { cmd };
+            year = parseInt(cmd.year, 10);
           } else {
             year = dayjs().year();
           }
@@ -73,16 +76,16 @@ exports.attach = function attach(program) {
           break;
 
         default:
-          if (cmd.year) {
-            year = { cmd };
-          } else {
-            year = dayjs().year();
-          }
+          year = currentDayJs.year();
+          month = currentDayJs.month() + 1;
+
           if (cmd.month) {
-            month = { cmd };
-          } else {
-            month = dayjs().month() + 1;
+            month = parseInt(cmd.month, 10);
           }
+          if (cmd.year) {
+            year = parseInt(cmd.year, 10);
+          }
+
           listDays(month, year);
           break;
       }
