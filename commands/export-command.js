@@ -53,22 +53,35 @@ exports.attach = function attach(program) {
     .option('-m, --month <m>', 'Month of data file to be exported. Defaults to current month')
     .option('-y, --year <y>', 'Year of data file to be exported. Defaults to current year')
     .description('Exports data file to .csv at specified location')
-    .action((path) => {
-      const fileData = dataFile.read();
+    .action((path, cmd) => {
+      const currentDayJs = dayjs();
+      let year = currentDayJs.year();
+      let month = currentDayJs.month() + 1;
+
+      if (cmd.month) {
+        month = parseInt(cmd.month, 10);
+      }
+      if (cmd.year) {
+        year = parseInt(cmd.year, 10);
+      }
+
+      const fileData = dataFile.read(month, year);
       const data = JSON.parse(fileData);
       let exportFileContents = '';
 
-      const lastDayOfMonth = dayjs().endOf('month').date();
+      if (data.length > 0) {
+        const lastDayOfMonth = dayjs(data[0].begin).endOf('month').date();
 
-      for (let i = 1; i <= lastDayOfMonth; i += 1) {
-        const current = data.find(e => e.day === i);
-        if (current) {
-          const begin = dayjs(current.begin);
-          const end = current.end ? dayjs(current.end) : null;
+        for (let i = 1; i <= lastDayOfMonth; i += 1) {
+          const current = data.find(e => e.day === i);
+          if (current) {
+            const begin = dayjs(current.begin);
+            const end = current.end ? dayjs(current.end) : null;
 
-          exportFileContents += buildLine(begin, end);
-        } else {
-          exportFileContents += ',,,,\n';
+            exportFileContents += buildLine(begin, end);
+          } else {
+            exportFileContents += ',,,,\n';
+          }
         }
       }
 
